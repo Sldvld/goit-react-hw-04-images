@@ -15,29 +15,28 @@ export const App = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    if (!query) {
+      return;
+    }
+    setLoading(true);
     const fetchData = async () => {
-      if (query === '' || page < 1) return;
-      try {
-        setLoading(true);
-        const { totalHits, hits } = await FetchImages(query, page);
-        if (totalHits === 0) {
-          Notify.failure('Nothing was found for your request');
-          setLoading(false);
-          return;
-        }
-        setImages(prevImages => (page === 1 ? hits : [...prevImages, ...hits]));
-        setTotalHits(
-          page === 1
-            ? totalHits - hits.length
-            : totalHits - [...images, ...hits].length
-        );
+      const { totalHits, hits } = await FetchImages(query, page);
+      if (totalHits === 0) {
+        Notify.failure('Nothing was found for your request');
         setLoading(false);
-      } catch (error) {
-        Notify.failure('Something went wrong');
+        return;
       }
+      setImages(prevState => (page === 1 ? hits : [...prevState, ...hits]));
+      setTotalHits(prevState =>
+        page === 1 ? totalHits - hits.length : prevState - hits.length
+      );
+      setLoading(false);
     };
-    fetchData();
-  }, [images, query, page]);
+    fetchData().catch(error => {
+      Notify.failure('Something went wrong');
+      setLoading(false);
+    });
+  }, [query, page]);
 
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
