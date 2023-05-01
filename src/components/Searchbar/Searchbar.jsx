@@ -6,7 +6,6 @@ import { ReactComponent as IconInput } from '../../Icon/searchIcon.svg';
 
 export function Searchbar({ onSubmit }) {
   const [query, setQuery] = useState('');
-  const [page, setPage] = useState(1);
 
   const handleQueryChange = evt => {
     setQuery(evt.currentTarget.value.toLowerCase());
