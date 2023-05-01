@@ -37,7 +37,7 @@ export const App = () => {
       }
     };
     fetchData();
-  }, [query, page]);
+  }, [images, query, page]);
 
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
