@@ -42,11 +42,15 @@ export const App = () => {
     setPage(prevPage => prevPage + 1);
   };
 
-  const handleFormSubmit = query => {
-    setQuery(query);
-    setPage(1);
-    setImages([]);
-    setTotalHits(0);
+  const handleFormSubmit = newQuery => {
+    if (query !== newQuery) {
+      setQuery(query);
+      setPage(1);
+      setImages([]);
+      setTotalHits(0);
+    } else {
+      Notify.warning('Please enter next request');
+    }
   };
 
   return (
@@ -60,4 +64,3 @@ export const App = () => {
     </div>
   );
 };
-//не відображає живу сторінку...
